@@ -1,36 +1,70 @@
 import axios from "axios";
 
 describe("Account page", () => {
-  beforeEach(() => {
+  xit("has header of Account Page", () => {
     cy.visit("/account?userId=1");
-  });
-
-  it("has header of Account Page", () => {
     cy.get("h1").should("contain.text", "Account Page");
   });
 
-  it("has a button labelled Back that takes user back to Home Page", () => {
+  xit("has a button labelled Back that takes user back to Home Page", () => {
+    cy.visit("/account?userId=1");
     cy.get("a.btn.btn-primary").should("contain.text", "Back");
   });
 
-  //   it("displays name", async () => {
-  //     const response = await axios.get(
-  //       "http://jsonplaceholder.typicode.com/users"
-  //     );
-  //     const users = response.data;
+  it("displays users name", () => {
+    var users = require("../fixtures/users.json");
 
-  //     cy.get("tbody")
-  //       .children("tr")
-  //       .each((el, index) => {
-  //         const user = users[index];
+    for (let i = 0; i < users.length; i++) {
+      const user = users[i];
+      cy.visit(`/account?userId=${user.id}`);
+      cy.get("tr").should("contain", user.name);
+    }
+  });
 
-  //         cy.wrap(el)
-  //           .children("td")
-  //           .should("contain", `${user.name}`);
-  //       });
-  //   });
+  it("displays email which is a mailto link", () => {
+    var users = require("../fixtures/users.json");
 
-  it("should have copyright for the current year should be displayed at the bottom", () => {
+    for (let i = 0; i < users.length; i++) {
+      const user = users[i];
+      cy.visit(`/account?userId=${user.id}`);
+      cy.get("tr")
+        .contains(user.email)
+        .should("have.attr", "href", `mailto:${user.email}`);
+    }
+  });
+
+  it("displays users phone", () => {
+    var users = require("../fixtures/users.json");
+
+    for (let i = 0; i < users.length; i++) {
+      const user = users[i];
+      cy.visit(`/account?userId=${user.id}`);
+      cy.get("tr").should("contain", user.phone);
+    }
+  });
+
+  it("displays users website", () => {
+    var users = require("../fixtures/users.json");
+
+    for (let i = 0; i < users.length; i++) {
+      const user = users[i];
+      cy.visit(`/account?userId=${user.id}`);
+      cy.get("tr").should("contain", user.website);
+    }
+  });
+
+  it("displays link to google maps with their location", () => {
+    var users = require("../fixtures/users.json");
+
+    for (let i = 0; i < users.length; i++) {
+      const user = users[i];
+      cy.visit(`/account?userId=${user.id}`);
+      cy.get("tr").should("have.attr", "href", "www.google.com/maps");
+    }
+  });
+
+  xit("should have copyright for the current year should be displayed at the bottom", () => {
+    cy.visit("/account?userId=1");
     const currentYear = Cypress.moment().format("YYYY");
     cy.contains("body", "© " + currentYear);
   });

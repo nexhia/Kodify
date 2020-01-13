@@ -68,4 +68,4 @@ describe("The home page", () => {
 //        1. Each user row should display the user's `name` and `email` address √
 //            1. The name should link to the account page for that specific user √
 //            2. The email should be a mailto link √
-// 3. A copyright for the current year should be displayed at the bottom of all pages
+// 3. A copyright for the current year should be displayed at the bottom of all pages √
